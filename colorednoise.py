@@ -47,7 +47,7 @@ def phase_psd_from_qd(qd, b, tau0):
         
         Kasdin & Walter eqn (39)
     """
-    g_b = qd*2.0*pow(2.0*math.pi, b)*pow(tau0, b+1.0)
+    g_b = qd*2.0*pow(2.0*np.pi, b)*pow(tau0, b+1.0)
     return g_b
 
 def frequency_psd_from_qd(qd, b, tau0):
@@ -63,7 +63,7 @@ def frequency_psd_from_qd(qd, b, tau0):
         Kasdin & Walter eqn (39)
     """
     a = b + 2.0
-    h_a = qd*2.0*pow(2.0*math.pi, a)*pow(tau0, a-1.0)
+    h_a = qd*2.0*pow(2.0*np.pi, a)*pow(tau0, a-1.0)
     return h_a
     
 def adev_from_qd(qd, b, tau0):
@@ -91,14 +91,14 @@ def adev_from_qd(qd, b, tau0):
     g_b = phase_psd_from_qd(qd,b,tau0)
     f_h = 1.0
     if b == 0:
-        coeff = 3.0*f_h / (4.0*pow(math.pi,2)) # E, White PM, tau^-1
+        coeff = 3.0*f_h / (4.0*pow(np.pi,2)) # E, White PM, tau^-1
     elif b == -1:
-        coeff = (1.038+3.0*math.log(2*math.pi*f_h*tau0))/(4.0*pow(math.pi,2)) # D, Flicker PM, tau^-1
+        coeff = (1.038+3.0*np.log(2*np.pi*f_h*tau0))/(4.0*pow(np.pi,2)) # D, Flicker PM, tau^-1
     elif b == -2:
         coeff = 0.5 # C, white FM,  1/sqrt(tau)
     elif b == -3:
-        coeff = 2*math.log(2) # B, flicker FM,  constant ADEV
+        coeff = 2*np.log(2) # B, flicker FM,  constant ADEV
     elif b == -4:
-        coeff = 2.0*pow(math.pi,2)/3.0 #  A, RW FM, sqrt(tau)
+        coeff = 2.0*pow(np.pi,2)/3.0 #  A, RW FM, sqrt(tau)
 
-    return math.sqrt(coeff*g_b*(2.0*pow(math.pi,2)))
+    return np.sqrt(coeff*g_b*(2.0*pow(np.pi,2)))
