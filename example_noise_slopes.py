@@ -10,7 +10,7 @@ import math
 
 """
 
-colorednoise example with phase-PSD, frequency-PSD, and ADEV
+colorednoise example with phase-PSD, frequency-PSD, and ADEV/MDEV
 for different noise types.
 
 Anders Wallin 2016-04-09
@@ -73,8 +73,7 @@ def main():
     a2 = cn.frequency_psd_from_qd( qd2, -2, tau0 )
     a3 = cn.frequency_psd_from_qd( qd3, -3, tau0 )
     a4 = cn.frequency_psd_from_qd( qd4, -4, tau0 )
-    
-    
+
     # compute ADEV
     (t0,d0,e,n) = at.oadev(x0, rate=sample_rate)
     (t1,d1,e,n) = at.oadev(x1, rate=sample_rate)
@@ -137,20 +136,21 @@ def main():
     
     # ADEV figure
     plt.subplot(2,2,3)
-    plt.loglog(t4,d4,'o')
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
-        
-    plt.loglog(t3,d3,'o')
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)*1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
-    
-    plt.loglog(t2,d2,'o')
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
-    
-    plt.loglog(t1,d1,'o')
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
-    
+
     plt.loglog(t0,d0,'o')
     plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/xx for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-1}$')
+
+    plt.loglog(t1,d1,'o')
+    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
+
+    plt.loglog(t2,d2,'o')
+    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
+
+    plt.loglog(t3,d3,'o')
+    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)*1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
+
+    plt.loglog(t4,d4,'o')
+    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
 
     plt.legend(framealpha=0.9, loc='lower left')
     plt.grid()
@@ -160,20 +160,20 @@ def main():
     
     # MDEV
     plt.subplot(2, 2, 4)
-    plt.loglog(mt4,md4,'o')
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
-        
-    plt.loglog(mt3,md3,'o')
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)**1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
-    
-    plt.loglog(mt2,md2,'o')
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
-    
-    plt.loglog(mt1,md1,'o')
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
-    
     plt.loglog(mt0,md0,'o')
     plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/pow(xx,3.0/2.0) for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-3/2}$')
+
+    plt.loglog(mt1,md1,'o')
+    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
+
+    plt.loglog(mt2,md2,'o')
+    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
+
+    plt.loglog(mt3,md3,'o')
+    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)**1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
+
+    plt.loglog(mt4,md4,'o')
+    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
 
     plt.legend(framealpha=0.9, loc='lower left')
     plt.grid()
