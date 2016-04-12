@@ -92,20 +92,20 @@ def main():
     plt.figure()
     # Phase PSD figure
     plt.subplot(2,2,1)
-    plt.loglog(f0,psd0,'.')
-    plt.loglog(f0,[ g0*pow(xx, 0.0) for xx in f0],'--',label=r'$g_0f^0$')
+    plt.loglog(f0,[ g0*pow(xx, 0.0) for xx in f0],'--',label=r'$g_0f^0$', color='black')
+    plt.loglog(f0,psd0,'.', color='black')
     
-    plt.loglog(f1,psd1,'.')
-    plt.loglog(f1[1:],[ g1*pow(xx, -1.0) for xx in f1[1:]],'--',label=r'$g_{-1}f^{-1}$')
+    plt.loglog(f1[1:],[ g1*pow(xx, -1.0) for xx in f1[1:]],'--',label=r'$g_{-1}f^{-1}$', color='red')
+    plt.loglog(f1,psd1,'.' ,color='red')
     
-    plt.loglog(f2,psd2,'.')
-    plt.loglog(f2[1:],[ g2*pow(xx,-2.0) for xx in f2[1:]],'--',label=r'$g_{-2}f^{-2}$')
+    plt.loglog(f2[1:],[ g2*pow(xx,-2.0) for xx in f2[1:]],'--',label=r'$g_{-2}f^{-2}$', color='green')
+    plt.loglog(f2,psd2,'.',  color='green')
     
-    plt.loglog(f3, psd3, '.')
-    plt.loglog(f3[1:], [ g3*pow(xx,-3.0) for xx in f3[1:]],'--',label=r'$g_{-3}f^{-3}$')
+    plt.loglog(f3[1:], [ g3*pow(xx,-3.0) for xx in f3[1:]],'--',label=r'$g_{-3}f^{-3}$', color='pink')
+    plt.loglog(f3, psd3, '.', color='pink')
     
-    plt.loglog(f4, psd4, '.')
-    plt.loglog(f4[1:], [ g4*pow(xx,-4.0) for xx in f4[1:]],'--',label=r'$g_{-4}f^{-4}$')
+    plt.loglog(f4[1:], [ g4*pow(xx,-4.0) for xx in f4[1:]],'--',label=r'$g_{-4}f^{-4}$', color='blue')
+    plt.loglog(f4, psd4, '.', color='blue')
     plt.grid()
     plt.legend(framealpha=0.9)
     plt.title(r'Phase Power Spectral Density')
@@ -114,20 +114,20 @@ def main():
     
     # frequency PSD figure
     plt.subplot(2,2,2)
-    plt.loglog(ff0,fpsd0,'.')
-    plt.loglog(ff0[1:], [ a0*pow(xx,2) for xx in ff0[1:]],'--',label=r'$h_{2}f^{2}$')
+    plt.loglog(ff0[1:], [ a0*pow(xx,2) for xx in ff0[1:]],'--',label=r'$h_{2}f^{2}$', color='black')
+    plt.loglog(ff0,fpsd0,'.',  color='black')
     
-    plt.loglog(ff1,fpsd1,'.')
-    plt.loglog(ff1[1:], [ a1*pow(xx,1) for xx in ff1[1:]],'--',label=r'$h_{1}f^{1}$')
+    plt.loglog(ff1[1:], [ a1*pow(xx,1) for xx in ff1[1:]],'--',label=r'$h_{1}f^{1}$', color='red')
+    plt.loglog(ff1,fpsd1,'.',  color='red')
 
-    plt.loglog(ff2,fpsd2,'.')
-    plt.loglog(ff2[1:], [ a2*pow(xx,0) for xx in ff2[1:]],'--',label=r'$h_{0}f^{0}$')
+    plt.loglog(ff2[1:], [ a2*pow(xx,0) for xx in ff2[1:]],'--',label=r'$h_{0}f^{0}$', color='green')
+    plt.loglog(ff2,fpsd2,'.', color='green')
     
-    plt.loglog(ff3,fpsd3,'.')
-    plt.loglog(ff3[1:], [ a3*pow(xx,-1) for xx in ff3[1:]],'--',label=r'$h_{-1}f^{-1}$')
+    plt.loglog(ff3[1:], [ a3*pow(xx,-1) for xx in ff3[1:]],'--',label=r'$h_{-1}f^{-1}$', color='pink')
+    plt.loglog(ff3,fpsd3,'.', color='pink')
 
-    plt.loglog(ff4,fpsd4,'.')
-    plt.loglog(ff4[1:], [ a4*pow(xx,-2) for xx in ff4[1:]],'--',label=r'$h_{-2}f^{-2}$')
+    plt.loglog(ff4[1:], [ a4*pow(xx,-2) for xx in ff4[1:]],'--',label=r'$h_{-2}f^{-2}$', color='blue')
+    plt.loglog(ff4,fpsd4,'.', color='blue')
     plt.grid()
     plt.legend(framealpha=0.9)
     plt.title(r'Frequency Power Spectral Density')
@@ -137,20 +137,20 @@ def main():
     # ADEV figure
     plt.subplot(2,2,3)
 
-    plt.loglog(t0,d0,'o')
-    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/xx for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-1}$')
+    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/xx for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-1}$', color='black')
+    plt.loglog(t0,d0,'o', color='black')
 
-    plt.loglog(t1,d1,'o')
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
+    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$', color='red')
+    plt.loglog(t1,d1,'o', color='red')
 
-    plt.loglog(t2,d2,'o')
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
+    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$', color='green')
+    plt.loglog(t2,d2,'o', color='green')
 
-    plt.loglog(t3,d3,'o')
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)*1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
+    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)*1 for xx in t3],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$', color='pink')
+    plt.loglog(t3,d3,'o', color='pink')
 
-    plt.loglog(t4,d4,'o')
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
+    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t4],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$', color='blue')
+    plt.loglog(t4,d4,'o', color='blue')
 
     plt.legend(framealpha=0.9, loc='lower left')
     plt.grid()
@@ -160,20 +160,21 @@ def main():
     
     # MDEV
     plt.subplot(2, 2, 4)
-    plt.loglog(mt0,md0,'o')
-    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/pow(xx,3.0/2.0) for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-3/2}$')
 
-    plt.loglog(mt1,md1,'o')
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$')
+    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/pow(xx,3.0/2.0) for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-3/2}$', color='black')
+    plt.loglog(mt0,md0,'o', color='black')
 
-    plt.loglog(mt2,md2,'o')
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$')
+    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$', color='red')
+    plt.loglog(mt1,md1,'o', color='red')
 
-    plt.loglog(mt3,md3,'o')
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)**1 for xx in t2],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$')
+    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$', color='green')
+    plt.loglog(mt2,md2,'o', color='green')
 
-    plt.loglog(mt4,md4,'o')
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$')
+    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)**1 for xx in t3],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$', color='pink')
+    plt.loglog(mt3,md3,'o', color='pink')
+
+    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t4],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$', color='blue')
+    plt.loglog(mt4,md4,'o', color='blue')
 
     plt.legend(framealpha=0.9, loc='lower left')
     plt.grid()
