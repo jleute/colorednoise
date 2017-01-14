@@ -20,7 +20,6 @@ Anders Wallin 2016-04-09
 def main():
 
     nr = 2**14 # number of datapoints in time-series
-    tau0=1.0 # sampling interval, sets nyquist frequency to 0.5/tau0
     adev0 = 1.0e-11
     
     #
@@ -33,7 +32,7 @@ def main():
     #
     qd0 = qd1 = qd2 = qd3 = qd4 = pow(adev0, 2) # discrete variance for noiseGen()
     tau0 = 1.0 # sample interval
-    sample_rate = 1/tau0
+    sample_rate = 1.0/tau0
     
     x0 = cn.noiseGen(nr, qd0, 0)   # white phase noise (WPM)
     x1 = cn.noiseGen(nr, qd1, -1)  # flicker phase noise (FPM)
@@ -49,11 +48,11 @@ def main():
     y4 = at.phase2frequency(x4, sample_rate)
     
     # compute phase PSD
-    (f0, psd0) = at.noise.scipy_psd(x0, fs=sample_rate, nr_segments=4)
-    (f1, psd1) = at.noise.scipy_psd(x1, fs=sample_rate, nr_segments=4)
-    (f2, psd2) = at.noise.scipy_psd(x2, fs=sample_rate, nr_segments=4)
-    (f3, psd3) = at.noise.scipy_psd(x3, fs=sample_rate, nr_segments=4)
-    (f4, psd4) = at.noise.scipy_psd(x4, fs=sample_rate, nr_segments=4)
+    (f0, psd0) = at.noise.scipy_psd(x0, f_sample=sample_rate, nr_segments=4)
+    (f1, psd1) = at.noise.scipy_psd(x1, f_sample=sample_rate, nr_segments=4)
+    (f2, psd2) = at.noise.scipy_psd(x2, f_sample=sample_rate, nr_segments=4)
+    (f3, psd3) = at.noise.scipy_psd(x3, f_sample=sample_rate, nr_segments=4)
+    (f4, psd4) = at.noise.scipy_psd(x4, f_sample=sample_rate, nr_segments=4)
     # compute phase PSD prefactor g_b
     g0 = cn.phase_psd_from_qd( qd0, 0, tau0 )
     g1 = cn.phase_psd_from_qd( qd0, -1, tau0 )
@@ -62,11 +61,11 @@ def main():
     g4 = cn.phase_psd_from_qd( qd0, -4, tau0 )
 
     # compute frequency PSD
-    (ff0, fpsd0) = at.noise.scipy_psd(y0, fs=sample_rate, nr_segments=4)
-    (ff1, fpsd1) = at.noise.scipy_psd(y1, fs=sample_rate, nr_segments=4)
-    (ff2, fpsd2) = at.noise.scipy_psd(y2, fs=sample_rate, nr_segments=4)
-    (ff3, fpsd3) = at.noise.scipy_psd(y3, fs=sample_rate, nr_segments=4)
-    (ff4, fpsd4) = at.noise.scipy_psd(y4, fs=sample_rate, nr_segments=4)
+    (ff0, fpsd0) = at.noise.scipy_psd(y0, f_sample=sample_rate, nr_segments=4)
+    (ff1, fpsd1) = at.noise.scipy_psd(y1, f_sample=sample_rate, nr_segments=4)
+    (ff2, fpsd2) = at.noise.scipy_psd(y2, f_sample=sample_rate, nr_segments=4)
+    (ff3, fpsd3) = at.noise.scipy_psd(y3, f_sample=sample_rate, nr_segments=4)
+    (ff4, fpsd4) = at.noise.scipy_psd(y4, f_sample=sample_rate, nr_segments=4)
     # compute frequency PSD prefactor h_a
     a0 = cn.frequency_psd_from_qd( qd0, 0, tau0 )
     a1 = cn.frequency_psd_from_qd( qd1, -1, tau0 )
@@ -137,19 +136,19 @@ def main():
     # ADEV figure
     plt.subplot(2,2,3)
 
-    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/xx for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-1}$', color='black')
+    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0, xx)/xx for xx in t0],'--', label=r'$\propto\sqrt{h_{2}}\tau^{-1}$', color='black')
     plt.loglog(t0,d0,'o', color='black')
 
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$', color='red')
+    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0, xx)/xx for xx in t1],'--', label=r'$\propto\sqrt{h_{1}}\tau^{-1}$', color='red')
     plt.loglog(t1,d1,'o', color='red')
 
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$', color='green')
+    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0, xx)/math.sqrt(xx) for xx in t2],'--', label=r'$\propto\sqrt{h_{0}}\tau^{-1/2}$', color='green')
     plt.loglog(t2,d2,'o', color='green')
 
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)*1 for xx in t3],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$', color='pink')
+    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0, xx)*1 for xx in t3],'--', label=r'$\propto\sqrt{h_{-1}}\tau^0$', color='pink')
     plt.loglog(t3,d3,'o', color='pink')
 
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t4],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$', color='blue')
+    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0, xx)*math.sqrt(xx) for xx in t4],'--', label=r'$\propto\sqrt{h_{-2}}\tau^{+1/2}$', color='blue')
     plt.loglog(t4,d4,'o', color='blue')
 
     plt.legend(framealpha=0.9, loc='lower left')
@@ -161,19 +160,19 @@ def main():
     # MDEV
     plt.subplot(2, 2, 4)
 
-    plt.loglog(t0, [ cn.adev_from_qd(qd0, 0, tau0)/pow(xx,3.0/2.0) for xx in t0],'--', label=r'$\sqrt{Eh_{2}}\tau^{-3/2}$', color='black')
+    plt.loglog(t0, [ cn.mdev_from_qd(qd0, 0, tau0, xx)/pow(xx,3.0/2.0) for xx in t0],'--', label=r'$\propto\sqrt{h_{2}}\tau^{-3/2}$', color='black')
     plt.loglog(mt0,md0,'o', color='black')
 
-    plt.loglog(t1, [ cn.adev_from_qd(qd1, -1, tau0)/xx for xx in t1],'--', label=r'$\sqrt{Dh_{1}}\tau^{-1}$', color='red')
+    plt.loglog(t1, [ cn.mdev_from_qd(qd1, -1, tau0, xx)/xx for xx in t1],'--', label=r'$\propto\sqrt{h_{1}}\tau^{-1}$', color='red')
     plt.loglog(mt1,md1,'o', color='red')
 
-    plt.loglog(t2, [ cn.adev_from_qd(qd2, -2, tau0)/math.sqrt(xx) for xx in t2],'--', label=r'$\sqrt{Ch_{0}}\tau^{-1/2}$', color='green')
+    plt.loglog(t2, [ cn.mdev_from_qd(qd2, -2, tau0, xx)/math.sqrt(xx) for xx in t2],'--', label=r'$\propto\sqrt{h_{0}}\tau^{-1/2}$', color='green')
     plt.loglog(mt2,md2,'o', color='green')
 
-    plt.loglog(t3, [ cn.adev_from_qd(qd3, -3, tau0)**1 for xx in t3],'--', label=r'$\sqrt{Bh_{-1}}\tau^0$', color='pink')
+    plt.loglog(t3, [ cn.mdev_from_qd(qd3, -3, tau0, xx)**1 for xx in t3],'--', label=r'$\propto\sqrt{h_{-1}}\tau^0$', color='pink')
     plt.loglog(mt3,md3,'o', color='pink')
 
-    plt.loglog(t4, [ cn.adev_from_qd(qd4, -4, tau0)*math.sqrt(xx) for xx in t4],'--', label=r'$\sqrt{Ah_{-2}}\tau^{+1/2}$', color='blue')
+    plt.loglog(t4, [ cn.mdev_from_qd(qd4, -4, tau0, xx)*math.sqrt(xx) for xx in t4],'--', label=r'$\propto\sqrt{h_{-2}}\tau^{+1/2}$', color='blue')
     plt.loglog(mt4,md4,'o', color='blue')
 
     plt.legend(framealpha=0.9, loc='lower left')
