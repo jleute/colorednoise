@@ -86,14 +86,19 @@ def adev_from_qd(qd, b, tau0, tau):
         +1  -1  -2      -2
         +2  -2  -2      -3
     
+        Coefficients from:
+        S. T. Dawkins, J. J. McFerran and A. N. Luiten, 
+        "Considerations on the measurement of the stability of 
+        oscillators with frequency counters," in 
+        IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 
+        vol. 54, no. 5, pp. 918-925, May 2007. doi: 10.1109/TUFFC.2007.337
     """
     g_b = phase_psd_from_qd(qd,b,tau0)
     f_h = 0.5/tau0
-    gamma = 0.577
     if b == 0:
         coeff = 3.0*f_h / (4.0*pow(np.pi,2)) # E, White PM, tau^-1
     elif b == -1:
-        coeff = (np.log(2.0*np.pi*f_h*tau)+gamma)/(2.0*pow(np.pi,2))# D, Flicker PM, tau^-1
+        coeff = (1.038+3*np.log(2.0*np.pi*f_h*tau))/(4.0*pow(np.pi,2))# D, Flicker PM, tau^-1
     elif b == -2:
         coeff = 0.5 # C, white FM,  1/sqrt(tau)
     elif b == -3:
@@ -122,7 +127,13 @@ def mdev_from_qd(qd, b, tau0, tau):
          0  -2  -1      -1
         +1  -1  -2      -2
         +2  -2  -2      -3
-    
+
+        Coefficients from:
+        S. T. Dawkins, J. J. McFerran and A. N. Luiten, 
+        "Considerations on the measurement of the stability of 
+        oscillators with frequency counters," in 
+        IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control, 
+        vol. 54, no. 5, pp. 918-925, May 2007. doi: 10.1109/TUFFC.2007.337
     """
     g_b = phase_psd_from_qd(qd,b,tau0)
     f_h = 0.5/tau0
@@ -133,7 +144,7 @@ def mdev_from_qd(qd, b, tau0, tau):
     elif b == -2:
         coeff = 0.25 # C, white FM,  1/sqrt(tau)
     elif b == -3:
-        coeff = 27.0/20.0*np.log(2) # B, flicker FM,  constant MDEV
+        coeff = 2.0*np.log(3.0*pow(3.0,11.0/16.0)/4.0) # B, flicker FM,  constant MDEV
     elif b == -4:
         coeff = 11.0/20.0*pow(np.pi,2) #  A, RW FM, sqrt(tau)
 
